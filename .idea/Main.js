@@ -2,20 +2,28 @@ let examples1 = [];
 let exempleDiv;
 let result1, result2;
 let rand1, rand2;
+let correct;
+let level1;
+let span;
+let modal;
 
 let onloadFunc = function () {
     exempleDiv = document.getElementById("exampleDiv");
     result1 = document.getElementById("result1");
     result2 = document.getElementById("result2");
-
-    result1.addEventListener("click", buttonClick);
-    result2.addEventListener("click", buttonClick);
-
+    modal = document.getElementById("myModal")
+    span = document.getElementById("close")
+    setTimeout(modalBlock, 3000);
+    
     rand1 = randomNumber();
     rand2 = randomNumber();
     examples1 = [rand1 + " + " + rand2];
     innerExemple();
     innerResult();
+
+    result1.addEventListener("click", buttonClick);
+    result2.addEventListener("click", buttonClick);
+    span.addEventListener("click", modalNone)
 }
 
 let innerExemple = function () {
@@ -23,37 +31,41 @@ let innerExemple = function () {
         exempleDiv.innerText = examples1[i];
     }
 }
-
 let innerResult = function () {
-    let i = Math.floor(Math.random() * 20);
-    let j = 0
+    correct = rand1 + rand2;
 
-    if (i === 0){
-        j = 20;
-    }
-    result1.id = "resultRand" + i;
-    result2.id = "resultRand" + j;
-    resultRand0 = document.getElementById("resultRand" + i);
-    resultRand1 = document.getElementById("resultRand" + j);
-
-    let correct = rand1 + rand2;
-
-    resultRand0.innerText = correct;
-    resultRand1.innerText = randomNumber();
+    result1.innerText = correct;
+    result2.innerText = randomNumber();
 }
-
 let randomNumber = function () {
-    let rand = Math.floor(Math.random() * 16);
+    let rand = Math.floor(Math.random() * 100);
     return rand;
 }
-
 let buttonClick = function (e){
-    e.target.style.backgroundColor = "blue"
-    console.log(e.target.innerText);
+    if (e.target.innerText == correct){
+        e.target.style.backgroundColor = "green"
+        createNewExample(e);
+        level1++;
+    } else {
+        createNewExample(e);
+        modalBlock();
+    }
 }
 
-
-
+let modalNone = function () {
+    modal.style.display = "none";
+}
+let modalBlock = function (){
+    modal.style.display = "block"
+}
+let createNewExample = function (e){
+    rand1 = randomNumber();
+    rand2 = randomNumber();
+    examples1 = [rand1 + " + " + rand2];
+    innerExemple();
+    innerResult();
+    e.target.style.backgroundColor = "crimson"
+}
 
 window.onload = onloadFunc;
 
