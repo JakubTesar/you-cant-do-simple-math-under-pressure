@@ -1,21 +1,13 @@
 let examples1 = [];
-let exempleDiv;
-let result1, result2;
-let rand1, rand2;
-let correct;
-
+let exempleDiv, result1, result2, rand1, rand2, correct,span, span2,modal, myTimer, modal2, levelDiv, kolecko, koleckoContainer, levelContainer;
+let time = 8000;
 let level1 = 0;
 let level2 = 0;
 let level3 = 0;
 let level4 = 0;
 let level5 = 0;
 let levelNumber = 1;
-let span, span2;
-let modal, myTimer, modal2;
-let levelDiv;
-let kolečko;
-let kolečkoContainer;
-let levelContainer;
+
 
 let onloadFunc = function () {
     exempleDiv = document.getElementById("exampleDiv");
@@ -28,10 +20,10 @@ let onloadFunc = function () {
     //myTimer = setTimeout(modalBlock, 10000);
     levelDiv = document.getElementById("levelDiv")
     levelContainer = document.getElementById("levelContainer")
-    kolečko = document.getElementById("kolečko")
-    kolečkoContainer = document.createElement("div");
-    kolečkoContainer.className = "kolečkoContainer";
-    levelContainer.appendChild(kolečkoContainer);
+    kolecko = document.getElementById("kolečko")
+    koleckoContainer = document.createElement("div");
+    koleckoContainer.className = "kolečkoContainer";
+    levelContainer.appendChild(koleckoContainer);
 
 
     rand1 = randomNumber();
@@ -53,21 +45,27 @@ let innerExemple = function () {
     }
 }
 let innerResult = function () {
+    let rand = Math.floor(Math.random() * 5);
     correct = rand1 + rand2;
 
-    result1.innerText = correct;
-    result2.innerText = randomNumber();
+
+    if (rand < 2) {
+        result2.innerText = correct;
+        result1.innerText = randomNumber();
+    }
+
+    if (rand > 2) {
+        result1.innerText = correct;
+        result2.innerText = randomNumber();
+    }
 }
 let randomNumber = function () {
     let rand = Math.floor(Math.random() * 100);
     return rand;
 }
-
 let buttonClick = function (e) {
     if (e.target.innerText == correct) {
         level1++;
-        clearInterval(myTimer);
-        //myTimer = setInterval(modalBlock, 10000);
         createCircle();
         numberOfLevel()
         createNewExample();
@@ -77,42 +75,55 @@ let buttonClick = function (e) {
     }
 }
 let createCircle = function () {
-    kolečko = document.createElement("div");
-    kolečko.className = "kolečko"
-    kolečkoContainer.appendChild(kolečko);
+    kolecko = document.createElement("div");
+    kolecko.className = "kolečko"
+    koleckoContainer.appendChild(kolecko);
+}
+let timeControl = function (){
+    time = time - 1000;
+    clearInterval(myTimer);
+    myTimer = setInterval(modalBlock, time);
 }
 let numberOfLevel = function () {
+
     if (level1 >= 0) {
+        clearInterval(myTimer);
+        myTimer = setInterval(modalBlock, time);
         levelDiv.innerText = "Level " + levelNumber;
     }
     if (level1 == 5) {
+        timeControl();
         levelNumber++;
         levelDiv.innerText = "Level " + levelNumber;
-        kolečkoContainer.remove();
-        createKolečkoContainer();
+        koleckoContainer.remove();
+        createKoleckoContainer();
     }
     if (level1 == 10) {
+        timeControl();
         levelNumber++;
         levelDiv.innerText = "Level " + levelNumber;
-        kolečkoContainer.remove();
-        createKolečkoContainer();
+        koleckoContainer.remove();
+        createKoleckoContainer();
     }
     if (level1 == 15) {
+        timeControl();
         levelNumber++;
         levelDiv.innerText = "Level " + levelNumber;
-        kolečkoContainer.remove();
-        createKolečkoContainer()
+        koleckoContainer.remove();
+        createKoleckoContainer()
     }
     if (level1 == 20) {
+        timeControl();
         levelNumber++;
         levelDiv.innerText = "Level " + levelNumber;
-        kolečkoContainer.remove();
-        createKolečkoContainer();
+        koleckoContainer.remove();
+        createKoleckoContainer();
     }
     if (level1 == 25) {
+        timeControl();
         levelNumber++;
         levelDiv.innerText = "Level " + levelNumber;
-        createKolečkoContainer();
+        createKoleckoContainer();
         modalBlock2();
     }
 }
@@ -121,6 +132,8 @@ let modalNone = function () {
 }
 let modalBlock = function () {
     modal.style.display = "block"
+    clearInterval(myTimer);
+    myTimer = setInterval(modalBlock, time);
 }
 let modalNone2 = function () {
     modal2.style.display = "none";
@@ -135,10 +148,12 @@ let createNewExample = function (e) {
     innerExemple();
     innerResult();
 }
-let createKolečkoContainer = function () {
-    kolečkoContainer = document.createElement("div");
-    kolečkoContainer.className = "kolečkoContainer";
-    levelContainer.appendChild(kolečkoContainer);
+let createKoleckoContainer = function () {
+    koleckoContainer = document.createElement("div");
+    koleckoContainer.className = "kolečkoContainer";
+    levelContainer.appendChild(koleckoContainer);
 }
+
+
 window.onload = onloadFunc;
 
